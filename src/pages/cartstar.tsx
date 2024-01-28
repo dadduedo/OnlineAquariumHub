@@ -3,13 +3,13 @@ import { FC, useState, useEffect } from "react";
 import Link from 'next/link';
 import Image from "next/image";
 import axios from 'axios';
-import Shop from "./components/Shop";
-import Navbar from "./components/Navbar";
-import Home from "../pages/Home";
-import Confirmation from "./components/Checkout/Confirmation";
+import Shop from "../app/components/Shop";
 
-import Cart from "./components/Cart";
-import Checkout from "./components/Checkout/Checkout";
+import Home from "./Home";
+import Confirmation from "../app/components/Checkout/Confirmation";
+
+import Cart from "../app/components/Checkout/Cart";
+import Checkout from "../app/components/Checkout/Checkout";
 
 interface AppProps {}
 
@@ -82,18 +82,11 @@ const App: FC<AppProps> = () => {
   useEffect(() => {
     fetchCart();
   }, []);
-  const staticCart = {
-    total_items: 11,  // Puoi impostare il valore desiderato
-  };
-
   return (
     <main className="min-h-screen bg-gray-100">
-      <Navbar totalItems={staticCart.total_items} toggleCart={toggleCart} />
-
       <Link href="/">
         <Home />
       </Link>
-
       <Link href="/shop">
         <Shop products={products} onAddToCart={handleAddToCart} />
       </Link>     
@@ -109,7 +102,6 @@ const App: FC<AppProps> = () => {
       <Link href="/confirmation">
         <Confirmation />
       </Link>
-
         <Cart
           cart={cart}
           openCart={openCart}
