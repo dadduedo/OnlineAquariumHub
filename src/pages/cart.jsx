@@ -4,35 +4,12 @@ import { Dialog, Transition } from "@headlessui/react";
 import Link from 'next/link';
 import Image from "next/image";
 export default function Cart({
-	//cart,
+	cart,
 	openCart,
 	toggleCloseCart,
 	handleRemoveFromCart,
 	handleCartQty,
-}){
-	const cart = {
-		line_items: [
-		  { 
-			id: 1, 
-			name: 'Prodotto 1', 
-			price: 20, 
-			quantity: 2,
-			subtotal: { formatted: '40.00' },
-			image: { url: 'https://res.cloudinary.com/dakts9ect/image/upload/v1683835731/fcc-family-guys/stewie/stewie-family-guy-fox-1085482_qxxhmu.jpg' },
-			selected_options: [{ color: 'blu', size: 'L', option_name: 'Colore', group_name: 'Opzioni' }]
-		  },
-		  { 
-			id: 2, 
-			name: 'Prodotto 2', 
-			price: 30, 
-			quantity: 1,
-			subtotal: { formatted: '30.00' },
-			image: { url: 'https://res.cloudinary.com/dakts9ect/image/upload/v1683835731/fcc-family-guys/stewie/stewie-family-guy-fox-1085482_qxxhmu.jpg' },
-			selected_options: [{ color: 'blu', size: 'L', option_name: 'Colore', group_name: 'Opzioni' }]
-		  },
-		  // Altri oggetti line_items...
-		]
-	}	  
+}){	  
 	return (
 		<Transition.Root show={openCart} as={Fragment}>
 			<Dialog
@@ -101,15 +78,13 @@ export default function Cart({
 																	className="py-6 flex"
 																>
 																	<div className="flex-shrink-0 w-24 h-24 border border-gray-200 rounded-md overflow-hidden">
-																		<Image
-																			src={
-																				product.image.url
-																			}
-																			alt={
-																				product.name
-																			}
-																			className="w-full h-full"
-																		/>
+																	<Image
+																		src={product.image.url}
+																		alt={product.name}
+																		className="w-full h-full"
+																		width={100}  // Imposta la larghezza desiderata
+																		height={100} // Imposta l'altezza desiderata
+																	/>
 																	</div>
 
 																	<div className="ml-4 flex-1 flex flex-col">

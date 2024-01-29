@@ -8,14 +8,41 @@ import Navbar from "./components/Navbar";
 import Home from "../pages/Home";
 import Confirmation from "./components/Checkout/Confirmation";
 
-import Cart from "./components/Cart";
-import Checkout from "./components/Checkout/Checkout";
+import Cart from "../pages/cart";
+import Checkout from "../pages/checkout";
 
 interface AppProps {}
 
+interface CartItem {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+  image: {
+    url: string;
+  };
+  selected_options: {
+    color: string;
+    size: string;
+    option_name: string;
+    group_name: string;
+  }[];
+}
+
+interface Subtotal {
+  formatted: string;
+}
+
+interface Cart {
+  line_items: CartItem[];
+  subtotal: Subtotal;
+}
+
+
+
 const App: FC<AppProps> = () => {
-	const [products, setProducts] = useState([]);
-	const [cart, setCart] = useState({});
+	//const [products, setProducts] = useState([]);
+	const [cart, setCart] = useState<Cart>({ line_items: [], subtotal: { formatted: '' } });
 	const [openCart, setOpenCart] = useState(false);
 	const [order, setOrder] = useState({});
 	const [error, setError] = useState("");
@@ -30,10 +57,31 @@ const App: FC<AppProps> = () => {
 
   const fetchCart = async () => {
     try {
-      const response = await axios.get('/api/apiMongo'); // Sostituisci 'backend/api/cart' con il tuo endpoint effettivo
-      const cartData = response.data; // Estrai i dati dalla risposta Axios
-      console.log("cartData")
-      console.log(cartData)
+      //REDIS
+      // const response = await axios.get('/api/apiMongo'); // Sostituisci 'backend/api/cart' con il tuo endpoint effettivo
+      // const cartData = response.data; // Estrai i dati dalla risposta Axios
+      // console.log("cartData")
+      // console.log(cartData)
+      const cartData = {
+        line_items: [
+          { 
+          id: 1, 
+          name: 'Prodotto 1', 
+          price: 20, 
+          quantity: 2,
+          image: { url: 'https://res.cloudinary.com/dakts9ect/image/upload/v1683835731/fcc-family-guys/stewie/stewie-family-guy-fox-1085482_qxxhmu.jpg' },
+          selected_options: [{ color: 'blu', size: 'L', option_name: 'Colore', group_name: 'Opzioni' }]
+          },
+          { 
+          id: 2, 
+          name: 'Prodotto 2', 
+          price: 30, 
+          quantity: 1,
+          image: { url: 'https://res.cloudinary.com/dakts9ect/image/upload/v1683835731/fcc-family-guys/stewie/stewie-family-guy-fox-1085482_qxxhmu.jpg' },
+          selected_options: [{ color: 'blu', size: 'L', option_name: 'Colore', group_name: 'Opzioni' }]
+          }],
+		  subtotal: { formatted: '40.00' },
+		}
       setCart(cartData);
     } catch (error) {
       // Gestione degli errori, ad esempio:
@@ -85,7 +133,8 @@ const App: FC<AppProps> = () => {
   const staticCart = {
     total_items: 11,  // Puoi impostare il valore desiderato
   };
-
+  console.log("cart")
+  console.log(cart)
   return (
     <main className="min-h-screen bg-gray-100">
       <Navbar totalItems={staticCart.total_items} toggleCart={toggleCart} />
@@ -93,10 +142,6 @@ const App: FC<AppProps> = () => {
       <Link href="/">
         <Home />
       </Link>
-
-      <Link href="/shop">
-        <Shop products={products} onAddToCart={handleAddToCart} />
-      </Link>     
       <Link href="/checkout">
         <Checkout
           cart={cart}
